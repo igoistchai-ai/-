@@ -2,2311 +2,519 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0907">
 <title>ДЫМНЫЙ ДОМ — Копчёная рыба</title>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
-/* =========================================================
-   RESET
-========================================================= */
-
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-html,
-body{
-  width:100%;
-  min-height:100%;
-}
-
-html{
-  background:#090806;
-  scroll-behavior:auto;
-}
-
-body{
-  background:#090806;
-  color:#eee4d1;
-  font-family:Manrope,Arial,sans-serif;
-  overflow:hidden;
-}
-
-/* =========================================================
-   VARIABLES
-========================================================= */
-
+*{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#090806;
-  --cream:#eee4d1;
-  --gold:#a97948;
-  --muted:#918879;
-  --line:rgba(238,228,209,.13);
-
-  --ease:cubic-bezier(.22,1,.36,1);
-  --transition:1100ms;
-}
-
-/* =========================================================
-   LIGHT ATMOSPHERE
-========================================================= */
-
-.background{
-  position:fixed;
-  inset:0;
-  z-index:0;
-  pointer-events:none;
-  background:
-    radial-gradient(
-      circle at 50% 45%,
-      rgba(116,77,43,.22),
-      transparent 34%
-    ),
-    radial-gradient(
-      circle at 82% 20%,
-      rgba(160,111,61,.09),
-      transparent 28%
-    ),
-    #090806;
-  transition:
-    background 1200ms var(--ease);
-}
-
-.background::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  opacity:.035;
-  pointer-events:none;
-
-  background-image:
-    repeating-radial-gradient(
-      circle at 0 0,
-      #fff 0,
-      #fff 1px,
-      transparent 1px,
-      transparent 4px
-    );
-}
-
-/* =========================================================
-   APP
-========================================================= */
-
-.app{
-  position:fixed;
-  inset:0;
-  overflow:hidden;
-}
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.header{
-  position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  height:86px;
-
-  padding:0 42px;
-
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  z-index:50;
-
-  pointer-events:none;
-}
-
-.header > *{
-  pointer-events:auto;
-}
-
-.logo{
-  color:var(--cream);
-  text-decoration:none;
-
-  font-family:"Cormorant Garamond",serif;
-  font-size:29px;
-  font-weight:600;
-
-  letter-spacing:.12em;
-}
-
-.logo span{
-  color:var(--gold);
-}
-
-.nav{
-  display:flex;
-  align-items:center;
-  gap:26px;
-
-  padding:11px 18px;
-
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:999px;
-
-  background:rgba(10,8,6,.72);
-}
-
-.nav button{
-  appearance:none;
-  border:0;
-  background:none;
-
-  color:rgba(238,228,209,.52);
-
-  font-family:inherit;
-  font-size:9px;
-  font-weight:800;
-
-  letter-spacing:.17em;
-  text-transform:uppercase;
-
-  cursor:pointer;
-
-  transition:
-    color .25s ease,
-    transform .25s ease;
-}
-
-.nav button:hover{
-  color:var(--cream);
-  transform:translateY(-1px);
-}
-
-.header-order{
-  color:#0a0806;
-  background:var(--cream);
-
-  border-radius:999px;
-
-  padding:13px 19px;
-
-  text-decoration:none;
-
-  font-size:9px;
-  font-weight:800;
-
-  letter-spacing:.14em;
-  text-transform:uppercase;
-
-  transition:
-    transform .3s var(--ease),
-    box-shadow .3s ease;
-}
-
-.header-order:hover{
-  transform:translateY(-2px);
-  box-shadow:0 12px 35px rgba(238,228,209,.13);
-}
-
-/* =========================================================
-   WORLD
-========================================================= */
-
-.world{
-  position:absolute;
-  inset:0;
-  z-index:5;
-
-  transform:translate3d(0,0,0);
-
-  will-change:transform;
-}
-
-/* =========================================================
-   SCENES
-========================================================= */
-
-.scene{
-  position:absolute;
-  inset:0;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  padding:100px 6vw 70px;
-
-  opacity:0;
-
-  transform:
-    translate3d(0,70px,0)
-    scale(.96);
-
-  visibility:hidden;
-
-  transition:
-    opacity var(--transition) var(--ease),
-    transform var(--transition) var(--ease);
-
-  will-change:opacity,transform;
-
-  pointer-events:none;
-}
-
-.scene.active{
-  opacity:1;
-
-  transform:
-    translate3d(0,0,0)
-    scale(1);
-
-  visibility:visible;
-
-  pointer-events:auto;
-
-  z-index:10;
-}
-
-.scene.previous{
-  opacity:0;
-
-  transform:
-    translate3d(0,-60px,0)
-    scale(1.035);
-
-  visibility:hidden;
-}
-
-.scene.next{
-  opacity:0;
-
-  transform:
-    translate3d(0,80px,0)
-    scale(.955);
-
-  visibility:hidden;
-}
-
-.scene-content{
-  width:min(1220px,100%);
-  position:relative;
-}
-
-/* =========================================================
-   SMALL LABEL
-========================================================= */
-
-.label{
-  display:flex;
-  align-items:center;
-  gap:11px;
-
-  color:var(--gold);
-
-  font-size:9px;
-  font-weight:800;
-
-  letter-spacing:.24em;
-  text-transform:uppercase;
-}
-
-.label::before{
-  content:"";
-
-  width:31px;
-  height:1px;
-
-  background:var(--gold);
-}
-
-/* =========================================================
-   HERO
-========================================================= */
-
-.hero{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  align-items:center;
-  gap:6vw;
-}
-
-.hero-copy{
-  position:relative;
-  z-index:4;
-}
-
-.hero-title{
-  margin-top:25px;
-
-  font-family:"Cormorant Garamond",serif;
-  font-weight:500;
-
-  font-size:clamp(76px,10vw,155px);
-  line-height:.76;
-
-  letter-spacing:-.065em;
-}
-
-.hero-title span{
-  display:block;
-
-  color:var(--gold);
-
-  font-style:italic;
-
-  transform:translateX(8%);
-}
-
-.hero-text{
-  width:min(440px,100%);
-
-  margin-top:36px;
-
-  color:rgba(238,228,209,.54);
-
-  font-size:13px;
-  line-height:1.85;
-}
-
-.buttons{
-  display:flex;
-  gap:10px;
-
-  margin-top:32px;
-}
-
-.button{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-
-  min-height:48px;
-
-  padding:0 21px;
-
-  border:1px solid rgba(238,228,209,.16);
-  border-radius:999px;
-
-  color:var(--cream);
-  background:rgba(255,255,255,.025);
-
-  text-decoration:none;
-
-  font-size:9px;
-  font-weight:800;
-
-  letter-spacing:.15em;
-  text-transform:uppercase;
-
-  cursor:pointer;
-
-  transition:
-    transform .3s var(--ease),
-    background .3s ease,
-    border-color .3s ease;
-}
-
-.button.primary{
-  background:var(--cream);
-  color:#0a0806;
-}
-
-.button:hover{
-  transform:translateY(-3px);
-  border-color:rgba(238,228,209,.3);
-}
-
-.button:active{
-  transform:scale(.97);
-}
-
-/* =========================================================
-   HERO IMAGE
-========================================================= */
-
-.hero-visual{
-  position:relative;
-
-  height:min(650px,72vh);
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.hero-photo{
-  position:relative;
-
-  width:min(520px,100%);
-  height:92%;
-
-  overflow:hidden;
-
-  transform:rotate(-3deg);
-
-  box-shadow:
-    0 40px 80px rgba(0,0,0,.45);
-
-  background:#15110d;
-}
-
-.hero-photo img{
-  display:block;
-
-  width:100%;
-  height:100%;
-
-  object-fit:cover;
-
-  filter:saturate(.72) contrast(1.06);
-}
-
-.hero-photo::after{
-  content:"";
-
-  position:absolute;
-  inset:0;
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(255,255,255,.08),
-      transparent 35%
-    ),
-    linear-gradient(
-      0deg,
-      rgba(0,0,0,.34),
-      transparent 50%
-    );
-}
-
-.frame{
-  position:absolute;
-  width:min(520px,100%);
-  height:92%;
-
-  border:1px solid rgba(238,228,209,.12);
-
-  transform:
-    translate(18px,18px)
-    rotate(3deg);
-}
-
-/* =========================================================
-   FISH
-========================================================= */
-
-.fish{
-  display:grid;
-  grid-template-columns:1.1fr .9fr;
-  align-items:center;
-  gap:7vw;
-}
-
-.photo-large{
-  position:relative;
-
-  height:min(610px,70vh);
-
-  overflow:hidden;
-
-  background:#15110d;
-
-  box-shadow:
-    0 45px 90px rgba(0,0,0,.45);
-}
-
-.photo-large img{
-  width:100%;
-  height:100%;
-
-  object-fit:cover;
-
-  filter:saturate(.72) contrast(1.06);
-}
-
-.fish-photo{
-  transform:rotate(2deg);
-}
-
-.fish-copy h2,
-.wood-copy h2{
-  margin-top:25px;
-
-  font-family:"Cormorant Garamond",serif;
-  font-size:clamp(68px,8vw,120px);
-
-  line-height:.78;
-  letter-spacing:-.06em;
-
-  font-weight:500;
-}
-
-.fish-copy h2 span,
-.wood-copy h2 span{
-  display:block;
-
-  color:var(--gold);
-
-  font-style:italic;
-}
-
-.text{
-  max-width:430px;
-
-  margin-top:30px;
-
-  color:rgba(238,228,209,.52);
-
-  font-size:13px;
-  line-height:1.85;
-}
-
-.quote{
-  margin-top:30px;
-
-  padding-left:20px;
-
-  border-left:1px solid var(--gold);
-
-  color:rgba(238,228,209,.76);
-
-  font-family:"Cormorant Garamond",serif;
-  font-size:21px;
-  font-style:italic;
-}
-
-/* =========================================================
-   PROCESS
-========================================================= */
-
-.process-content{
-  width:min(1200px,100%);
-}
-
-.process-heading{
-  margin-bottom:45px;
-}
-
-.process-heading h2{
-  margin-top:20px;
-
-  font-family:"Cormorant Garamond",serif;
-  font-size:clamp(62px,8vw,108px);
-
-  line-height:.78;
-  letter-spacing:-.06em;
-
-  font-weight:500;
-}
-
-.process-heading h2 i{
-  color:var(--gold);
-  font-style:italic;
-}
-
-.cards{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:13px;
-}
-
-.card{
-  position:relative;
-
-  min-height:255px;
-
-  padding:27px;
-
-  border:1px solid rgba(238,228,209,.1);
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255,255,255,.055),
-      rgba(255,255,255,.018)
-    );
-
-  overflow:hidden;
-
-  transition:
-    transform .4s var(--ease),
-    border-color .4s ease,
-    background .4s ease;
-}
-
-.card:hover{
-  transform:translateY(-7px);
-  border-color:rgba(238,228,209,.22);
-  background:rgba(255,255,255,.06);
-}
-
-.card-number{
-  color:var(--gold);
-
-  font-size:9px;
-  font-weight:800;
-
-  letter-spacing:.2em;
-}
-
-.card h3{
-  margin-top:58px;
-
-  font-family:"Cormorant Garamond",serif;
-  font-size:42px;
-  font-weight:500;
-}
-
-.card p{
-  margin-top:10px;
-
-  max-width:260px;
-
-  color:rgba(238,228,209,.42);
-
-  font-size:11px;
-  line-height:1.7;
-}
-
-/* =========================================================
-   WOOD
-========================================================= */
-
-.wood{
-  display:grid;
-  grid-template-columns:.9fr 1.1fr;
-  align-items:center;
-  gap:7vw;
-}
-
-.wood-photo{
-  transform:rotate(-2deg);
-}
-
-.wood-copy{
-  padding-left:3vw;
-}
-
-/* =========================================================
-   ORDER
-========================================================= */
-
-.order{
-  text-align:center;
-}
-
-.order-label{
-  justify-content:center;
-}
-
-.order-title{
-  margin-top:20px;
-
-  font-family:"Cormorant Garamond",serif;
-  font-size:clamp(84px,12vw,175px);
-
-  line-height:.7;
-
-  letter-spacing:-.075em;
-
-  font-weight:500;
-}
-
-.order-title span{
-  display:block;
-
-  color:var(--gold);
-
-  font-style:italic;
-}
-
-.order-box{
-  width:min(430px,100%);
-
-  margin:45px auto 0;
-
-  padding:23px;
-
-  border:1px solid rgba(238,228,209,.13);
-
-  background:rgba(17,14,10,.78);
-
-  box-shadow:0 30px 80px rgba(0,0,0,.35);
-}
-
-.quantity-row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  padding-bottom:20px;
-
-  border-bottom:1px solid var(--line);
-}
-
-.product-name{
-  text-align:left;
-}
-
-.product-name strong{
-  display:block;
-  font-size:12px;
-}
-
-.product-name small{
-  display:block;
-
-  margin-top:4px;
-
-  color:var(--muted);
-
-  font-size:9px;
-}
-
-.quantity{
-  display:flex;
-  align-items:center;
-  gap:15px;
-}
-
-.qty{
-  width:37px;
-  height:37px;
-
-  border:1px solid rgba(238,228,209,.14);
-  border-radius:50%;
-
-  background:rgba(255,255,255,.025);
-  color:var(--cream);
-
-  font-size:18px;
-
-  cursor:pointer;
-
-  transition:
-    transform .25s var(--ease),
-    background .25s ease;
-}
-
-.qty:hover{
-  background:rgba(255,255,255,.08);
-  transform:scale(1.08);
-}
-
-.qty:active{
-  transform:scale(.9);
-}
-
-.qty-value{
-  min-width:18px;
-
-  font-size:12px;
-  font-weight:800;
-}
-
-.total-row{
-  display:flex;
-  align-items:end;
-  justify-content:space-between;
-
-  padding:20px 0;
-}
-
-.total-label{
-  color:var(--muted);
-  font-size:10px;
-}
-
-.total{
-  font-family:"Cormorant Garamond",serif;
-  font-size:39px;
-}
-
-.telegram{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  width:100%;
-  min-height:52px;
-
-  background:var(--cream);
-  color:#0a0806;
-
-  text-decoration:none;
-
-  font-size:9px;
-  font-weight:900;
-
-  letter-spacing:.16em;
-  text-transform:uppercase;
-
-  transition:
-    transform .3s var(--ease),
-    box-shadow .3s ease;
-}
-
-.telegram:hover{
-  transform:translateY(-3px);
-  box-shadow:0 15px 40px rgba(238,228,209,.12);
-}
-
-/* =========================================================
-   HUD
-========================================================= */
-
-.hud{
-  position:absolute;
-
-  right:35px;
-  top:50%;
-
-  transform:translateY(-50%);
-
-  z-index:40;
-
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-
-  gap:13px;
-}
-
-.hud-dot{
-  width:5px;
-  height:5px;
-
-  border-radius:50%;
-
-  background:rgba(238,228,209,.28);
-
-  transition:
-    transform .4s var(--ease),
-    background .4s ease;
-}
-
-.hud-dot.active{
-  background:var(--gold);
-  transform:scale(1.8);
-}
-
-.hud-track{
-  width:1px;
-  height:70px;
-
-  background:rgba(238,228,209,.11);
-
-  margin-top:4px;
-}
-
-.hud-progress{
-  width:100%;
-  height:20%;
-
-  background:var(--gold);
-
-  transition:height .5s var(--ease);
-}
-
-/* =========================================================
-   COUNTER
-========================================================= */
-
-.counter{
-  position:absolute;
-
-  left:42px;
-  bottom:30px;
-
-  z-index:40;
-
-  color:rgba(238,228,209,.36);
-
-  font-size:9px;
-  font-weight:800;
-
-  letter-spacing:.22em;
-}
-
-.counter strong{
-  color:var(--cream);
-}
-
-/* =========================================================
-   AUTO
-========================================================= */
-
-.auto{
-  position:absolute;
-
-  right:34px;
-  bottom:30px;
-
-  z-index:40;
-
-  display:flex;
-  align-items:center;
-  gap:8px;
-
-  color:rgba(238,228,209,.32);
-
-  font-size:8px;
-  font-weight:800;
-
-  letter-spacing:.18em;
-}
-
-.auto-dot{
-  width:5px;
-  height:5px;
-
-  border-radius:50%;
-
-  background:var(--gold);
-
-  box-shadow:0 0 10px rgba(169,121,72,.65);
-}
-
-/* =========================================================
-   LOADING
-========================================================= */
-
-.loader{
-  position:fixed;
-  inset:0;
-
-  z-index:999;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  background:#090806;
-
-  transition:
-    opacity .7s var(--ease),
-    visibility .7s;
-}
-
-.loader.hidden{
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-}
-
-.loader-inner{
-  text-align:center;
-}
-
-.loader-logo{
-  font-family:"Cormorant Garamond",serif;
-
-  font-size:38px;
-
-  letter-spacing:.12em;
-}
-
-.loader-line{
-  width:120px;
-  height:1px;
-
-  margin:20px auto 0;
-
-  background:rgba(238,228,209,.1);
-
-  overflow:hidden;
-}
-
-.loader-line span{
-  display:block;
-
-  width:45%;
-
-  height:100%;
-
-  background:var(--gold);
-
-  animation:load 1.2s var(--ease) infinite;
-}
-
-@keyframes load{
-  0%{
-    transform:translateX(-130%);
-  }
-
-  100%{
-    transform:translateX(330%);
-  }
-}
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media(max-width:800px){
-
-  .header{
-    height:68px;
-    padding:0 17px;
-  }
-
-  .logo{
-    font-size:23px;
-  }
-
-  .nav{
-    display:none;
-  }
-
-  .header-order{
-    padding:11px 14px;
-    font-size:8px;
-  }
-
-  .scene{
-    padding:
-      82px
-      18px
-      55px;
-  }
-
-  .hero,
-  .fish,
-  .wood{
-    display:block;
-    width:100%;
-  }
-
-  .hero-visual{
-    position:absolute;
-
-    top:12%;
-    right:2%;
-    left:2%;
-
-    height:56%;
-  }
-
-  .hero-copy{
-    position:absolute;
-
-    left:0;
-    right:0;
-    bottom:2%;
-
-    z-index:5;
-  }
-
-  .hero-title{
-    font-size:clamp(70px,19vw,105px);
-  }
-
-  .hero-text{
-    display:none;
-  }
-
-  .buttons{
-    margin-top:22px;
-  }
-
-  .button{
-    min-height:44px;
-    padding:0 17px;
-  }
-
-  .photo-large{
-    height:54vh;
-    min-height:350px;
-  }
-
-  .fish-copy,
-  .wood-copy{
-    position:absolute;
-
-    left:18px;
-    right:18px;
-    bottom:5%;
-
-    z-index:5;
-
-    padding:0;
-  }
-
-  .fish-photo,
-  .wood-photo{
-    position:absolute;
-
-    left:0;
-    right:0;
-    top:0;
-
-    height:58vh;
-  }
-
-  .fish-copy h2,
-  .wood-copy h2{
-    font-size:20vw;
-  }
-
-  .text{
-    display:none;
-  }
-
-  .quote{
-    margin-top:17px;
-    font-size:17px;
-  }
-
-  .process-heading{
-    margin-bottom:25px;
-  }
-
-  .process-heading h2{
-    font-size:16vw;
-  }
-
-  .cards{
-    grid-template-columns:repeat(3,1fr);
-    gap:6px;
-  }
-
-  .card{
-    min-height:175px;
-    padding:15px;
-  }
-
-  .card h3{
-    margin-top:35px;
-    font-size:27px;
-  }
-
-  .card p{
-    display:none;
-  }
-
-  .order-title{
-    font-size:23vw;
-  }
-
-  .order-box{
-    margin-top:35px;
-  }
-
-  .hud{
-    right:13px;
-  }
-
-  .hud-track{
-    height:55px;
-  }
-
-  .counter{
-    left:17px;
-    bottom:21px;
-  }
-
-  .auto{
-    display:none;
-  }
-}
-
-/* =========================================================
-   VERY SMALL PHONES
-========================================================= */
-
-@media(max-width:420px){
-
-  .hero-title{
-    font-size:20vw;
-  }
-
-  .hero-visual{
-    height:53%;
-  }
-
-  .cards{
-    transform:scale(.95);
-    transform-origin:left center;
-  }
-
-  .card{
-    min-height:160px;
-  }
-
-  .card h3{
-    font-size:24px;
-  }
-
-  .order-box{
-    padding:17px;
-  }
-}
-
-/* =========================================================
-   REDUCED MOTION
-========================================================= */
-
+  --cream:#efe5d2;--gold:#c08a52;--muted:#9a9080;
+  --ease:cubic-bezier(.22,1,.36,1);--t:1200ms;
+  --p:0;
+}
+html,body{height:100%;background:#0b0907;color:var(--cream);overflow:hidden;
+  font-family:Manrope,Arial,sans-serif;-webkit-font-smoothing:antialiased;
+  overscroll-behavior:none;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* ---------- SKY (всё двигается только через transform/opacity) ---------- */
+.sky{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;contain:strict}
+.tone{position:absolute;inset:0;opacity:0;transition:opacity 1800ms ease}
+.tone.on{opacity:1}
+.t0{background:linear-gradient(180deg,#0b0907 0%,#1c130d 55%,#4a2c17 100%)}
+.t1{background:linear-gradient(180deg,#0a0908 0%,#171210 50%,#3b2616 100%)}
+.t2{background:linear-gradient(180deg,#07090c 0%,#101519 55%,#2c2a24 100%)}
+.t3{background:linear-gradient(180deg,#0b0807 0%,#1d110b 50%,#5a2f14 100%)}
+.t4{background:linear-gradient(180deg,#0d0a07 0%,#2a1a0e 50%,#8a5524 100%)}
+
+.sun{position:absolute;left:50%;bottom:-30vmin;width:90vmin;height:90vmin;margin-left:-45vmin;
+  background:radial-gradient(closest-side,rgba(255,190,110,.32),rgba(255,150,70,.1) 55%,transparent 100%);
+  transform:translate3d(0,calc(var(--p)*-4vh),0);transition:transform 2200ms var(--ease)}
+
+.layer{position:absolute;left:0;right:0;bottom:0;height:70%;
+  transform:translate3d(0,calc(var(--p)*var(--dy)),0) scale(calc(1 + var(--p)*var(--ds)));
+  transform-origin:50% 100%;transition:transform 2200ms var(--ease)}
+.drift{position:absolute;left:0;top:0;width:200%;height:100%;
+  background-repeat:repeat-x;background-size:50% 100%;
+  animation:drift var(--sp) linear infinite;will-change:transform}
+@keyframes drift{to{transform:translate3d(-50%,0,0)}}
+
+.far{--dy:-1.5vh;--ds:.02;opacity:.55}
+.far .drift{--sp:140s;background-image:
+  radial-gradient(ellipse 16% 22% at 10% 70%,rgba(255,210,160,.13),transparent),
+  radial-gradient(ellipse 20% 26% at 38% 60%,rgba(255,200,150,.10),transparent),
+  radial-gradient(ellipse 15% 20% at 66% 74%,rgba(255,210,160,.12),transparent),
+  radial-gradient(ellipse 18% 24% at 90% 64%,rgba(255,200,150,.09),transparent)}
+.mid{--dy:-5vh;--ds:.07}
+.mid .drift{--sp:90s;background-image:
+  radial-gradient(ellipse 24% 28% at 14% 78%,rgba(240,200,160,.13),transparent),
+  radial-gradient(ellipse 28% 30% at 52% 70%,rgba(230,190,150,.11),transparent),
+  radial-gradient(ellipse 22% 26% at 84% 80%,rgba(240,200,160,.12),transparent)}
+.near{--dy:-12vh;--ds:.18;opacity:.8}
+.near .drift{--sp:55s;background-image:
+  radial-gradient(ellipse 30% 34% at 20% 92%,rgba(220,180,140,.11),transparent),
+  radial-gradient(ellipse 34% 36% at 70% 96%,rgba(210,170,130,.10),transparent)}
+.vignette{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(5,4,3,.65) 100%)}
+
+/* ---------- APP ---------- */
+.app{position:fixed;inset:0;z-index:2;overflow:hidden}
+.header{position:absolute;top:0;left:0;right:0;height:84px;padding:0 max(42px,env(safe-area-inset-left));
+  display:flex;align-items:center;justify-content:space-between;z-index:50}
+.logo{color:var(--cream);text-decoration:none;font:600 28px "Cormorant Garamond",serif;letter-spacing:.12em}
+.logo span{color:var(--gold)}
+.nav{display:flex;gap:26px;padding:12px 20px;border:1px solid rgba(255,255,255,.1);border-radius:99px;background:rgba(14,10,7,.82)}
+.nav button{background:none;border:0;cursor:pointer;color:rgba(239,229,210,.6);font-size:11px;font-weight:800;
+  letter-spacing:.14em;text-transform:uppercase;transition:color .25s}
+.nav button:hover,.nav button[aria-current=true]{color:var(--cream)}
+.nav button[aria-current=true]{text-shadow:0 0 14px rgba(192,138,82,.6)}
+.header-order{color:#0b0907;background:var(--cream);border-radius:99px;padding:13px 20px;text-decoration:none;
+  font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;transition:transform .3s var(--ease)}
+.header-order:hover{transform:translateY(-2px)}
+
+.world{position:absolute;inset:0}
+.scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  padding:96px 6vw 64px;opacity:0;visibility:hidden;pointer-events:none;
+  transform:translate3d(0,0,0) scale(.88);
+  transition:opacity var(--t) var(--ease),transform var(--t) var(--ease),visibility 0s linear var(--t)}
+.scene.active{opacity:1;visibility:visible;pointer-events:auto;transform:none;z-index:10;
+  transition:opacity var(--t) var(--ease),transform var(--t) var(--ease),visibility 0s}
+.scene.previous{transform:translate3d(0,0,0) scale(1.22)} /* пролетаем сквозь */
+.scene.next{transform:translate3d(0,0,0) scale(.88)}
+.scene-content{width:min(1200px,100%);position:relative}
+
+.label{display:flex;align-items:center;gap:12px;color:var(--gold);font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase}
+.label::before{content:"";width:30px;height:1px;background:var(--gold)}
+h1,h2{font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.05em;line-height:.82;
+  text-shadow:0 6px 40px rgba(0,0,0,.45)}
+h1 span,h2 span,h2 i{display:block;color:var(--gold);font-style:italic}
+h2 i{display:inline}
+.hero-title{margin-top:24px;font-size:clamp(70px,10vw,150px)}
+.hero-title span{transform:translateX(8%)}
+.text,.hero-text{max-width:440px;margin-top:30px;color:rgba(239,229,210,.7);font-size:15px;line-height:1.75}
+.buttons{display:flex;gap:10px;margin-top:30px;flex-wrap:wrap}
+.button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;
+  border:1px solid rgba(239,229,210,.25);border-radius:99px;background:rgba(255,255,255,.04);cursor:pointer;
+  font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;transition:transform .3s var(--ease),border-color .3s}
+.button.primary{background:var(--cream);color:#0b0907;border-color:var(--cream)}
+.button:hover{transform:translateY(-3px)}
+.button:active{transform:scale(.97)}
+
+.hero,.fish,.wood{display:grid;align-items:center;gap:6vw}
+.hero{grid-template-columns:1fr 1fr}
+.fish{grid-template-columns:1.1fr .9fr}
+.wood{grid-template-columns:.9fr 1.1fr}
+.hero-visual{position:relative;height:min(640px,70dvh);display:flex;align-items:center;justify-content:center}
+.hero-photo,.photo-large{position:relative;overflow:hidden;background:#17120d;box-shadow:0 40px 80px rgba(0,0,0,.5)}
+.hero-photo{width:min(500px,100%);height:92%;transform:rotate(-3deg)}
+.photo-large{height:min(600px,68dvh)}
+.fish-photo{transform:rotate(2deg)}
+.wood-photo{transform:rotate(-2deg)}
+.hero-photo img,.photo-large img{display:block;width:100%;height:100%;object-fit:cover}
+.hero-photo::after,.photo-large::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,225,190,.12),transparent 40%),linear-gradient(0deg,rgba(0,0,0,.4),transparent 55%)}
+.frame{position:absolute;width:min(500px,100%);height:92%;border:1px solid rgba(239,229,210,.18);transform:translate(18px,18px) rotate(3deg)}
+.fish-copy h2,.wood-copy h2{margin-top:24px;font-size:clamp(64px,8vw,116px)}
+.wood-copy{padding-left:3vw}
+.quote{margin-top:28px;padding-left:20px;border-left:1px solid var(--gold);color:rgba(239,229,210,.82);
+  font:italic 500 23px/1.3 "Cormorant Garamond",serif}
+
+.process-heading{margin-bottom:42px}
+.process-heading h2{margin-top:20px;font-size:clamp(58px,8vw,104px)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{min-height:250px;padding:26px;border:1px solid rgba(239,229,210,.14);
+  background:linear-gradient(145deg,rgba(255,235,210,.07),rgba(255,235,210,.02));transition:transform .4s var(--ease),border-color .4s}
+.card:hover{transform:translateY(-6px);border-color:rgba(239,229,210,.3)}
+.card-number{color:var(--gold);font-size:11px;font-weight:800;letter-spacing:.18em}
+.card h3{margin-top:56px;font:500 42px "Cormorant Garamond",serif}
+.card p{margin-top:10px;max-width:260px;color:rgba(239,229,210,.6);font-size:13px;line-height:1.65}
+
+.order{text-align:center}
+.order .label{justify-content:center}
+.order-title{margin-top:20px;font-size:clamp(76px,12vw,170px);line-height:.74}
+.order-box{width:min(440px,100%);margin:42px auto 0;padding:24px;border:1px solid rgba(239,229,210,.18);
+  background:rgba(18,13,9,.88);box-shadow:0 30px 80px rgba(0,0,0,.4)}
+.quantity-row{display:flex;align-items:center;justify-content:space-between;padding-bottom:20px;border-bottom:1px solid rgba(239,229,210,.14)}
+.product-name{text-align:left}
+.product-name strong{display:block;font-size:14px}
+.product-name small{display:block;margin-top:4px;color:var(--muted);font-size:12px}
+.quantity{display:flex;align-items:center;gap:14px}
+.qty{width:44px;height:44px;border:1px solid rgba(239,229,210,.2);border-radius:50%;background:rgba(255,255,255,.04);font-size:20px;cursor:pointer;transition:transform .2s}
+.qty:active{transform:scale(.9)}
+.qty-value{min-width:22px;font-size:15px;font-weight:800}
+.total-row{display:flex;align-items:flex-end;justify-content:space-between;padding:20px 0}
+.total-label{color:var(--muted);font-size:12px}
+.total{font:500 40px "Cormorant Garamond",serif}
+.telegram{display:flex;align-items:center;justify-content:center;width:100%;min-height:54px;background:var(--cream);color:#0b0907;
+  text-decoration:none;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;transition:transform .3s var(--ease)}
+.telegram:hover{transform:translateY(-3px)}
+
+.hud{position:absolute;right:max(34px,env(safe-area-inset-right));top:50%;transform:translateY(-50%);z-index:40;
+  display:flex;flex-direction:column;align-items:center;gap:13px}
+.hud-dot{width:6px;height:6px;border-radius:50%;background:rgba(239,229,210,.3);transition:transform .4s var(--ease),background .4s}
+.hud-dot.active{background:var(--gold);transform:scale(1.8)}
+.hud-track{width:1px;height:70px;margin-top:4px;background:rgba(239,229,210,.14);overflow:hidden}
+.hud-progress{width:100%;height:100%;background:var(--gold);transform-origin:top;transform:scaleY(.2);transition:transform .6s var(--ease)}
+.counter{position:absolute;left:max(42px,env(safe-area-inset-left));bottom:max(28px,env(safe-area-inset-bottom));z-index:40;
+  color:rgba(239,229,210,.5);font-size:11px;font-weight:800;letter-spacing:.2em}
+.counter strong{color:var(--cream)}
+.auto{position:absolute;right:34px;bottom:28px;z-index:40;display:flex;align-items:center;gap:8px;
+  color:rgba(239,229,210,.45);font-size:10px;font-weight:800;letter-spacing:.16em}
+.auto-dot{width:5px;height:5px;border-radius:50%;background:var(--gold)}
+
+.loader{position:fixed;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:#0b0907;
+  transition:opacity .8s var(--ease),visibility .8s}
+.loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loader-logo{font:600 36px "Cormorant Garamond",serif;letter-spacing:.12em;text-align:center}
+.loader-line{width:120px;height:1px;margin:20px auto 0;background:rgba(239,229,210,.12);overflow:hidden}
+.loader-line span{display:block;width:45%;height:100%;background:var(--gold);animation:load 1.2s var(--ease) infinite}
+@keyframes load{0%{transform:translateX(-130%)}100%{transform:translateX(330%)}}
+
+/* ---------- ТЕЛЕФОН / ПЛАНШЕТ ---------- */
+@media(max-width:900px){
+  .nav{display:none}
+  .header{height:64px;padding:0 18px}
+  .logo{font-size:22px}
+  .header-order{padding:11px 15px}
+  .scene{padding:76px 18px 56px;align-items:stretch}
+  .scene-content{display:flex;flex-direction:column;justify-content:center;min-height:0}
+  .hero,.fish,.wood{display:flex;flex-direction:column;gap:22px}
+  .hero-visual,.photo-large{height:40dvh;min-height:220px;flex:none}
+  .hero-visual{order:-1;width:100%}
+  .hero-photo{height:100%;width:88%}
+  .frame{display:none}
+  .wood-photo{order:-1}
+  .hero-title{margin-top:16px;font-size:clamp(58px,17vw,96px)}
+  .fish-copy h2,.wood-copy h2{margin-top:16px;font-size:clamp(56px,17vw,92px)}
+  .wood-copy{padding:0}
+  .hero-text,.text{display:none}
+  .buttons{margin-top:20px}
+  .quote{margin-top:16px;font-size:19px}
+  .process-heading{margin-bottom:24px}
+  .process-heading h2{font-size:clamp(46px,14vw,80px)}
+  .cards{gap:8px}
+  .card{min-height:150px;padding:14px}
+  .card h3{margin-top:30px;font-size:26px}
+  .card p{display:none}
+  .order-title{font-size:clamp(62px,21vw,110px)}
+  .order-box{margin-top:26px;padding:18px}
+  .hud{right:10px}.hud-track{height:50px}
+  .counter{left:18px}
+  .auto{display:none}
+  .scene.previous{transform:scale(1.12)}
+  .scene.next{transform:scale(.92)}
+}
+@media(max-height:600px) and (max-width:900px){.hero-visual,.photo-large{height:30dvh;min-height:140px}}
+
+
+/* ---------- АНИМАЦИЯ: появление контента ---------- */
+[data-r]{transition:opacity 1100ms var(--ease),transform 1300ms var(--ease);transition-delay:0ms}
+.scene:not(.active) [data-r],html:not(.ready) [data-r]{opacity:0;transform:translate3d(0,46px,0)}
+.scene.active [data-r]{transition-delay:var(--d,0ms)}
+.scene:not(.active) [data-r]{transition-duration:500ms}
+html:not(.ready) [data-r]{transition:none}
+h1[data-r],h2[data-r]{transform-origin:0 100%}
+.scene:not(.active) h1 span[data-r],.scene:not(.active) h2 span[data-r]{transform:translate3d(0,70px,0) skewY(4deg)}
+.label::before{transform-origin:0 50%;transition:transform 1200ms var(--ease) calc(var(--d,0ms) + 200ms)}
+.scene:not(.active) .label::before,html:not(.ready) .label::before{transform:scaleX(0)}
+.order .label::before{transform-origin:100% 50%}
+
+/* фото: въезд, дыхание, медленный зум */
+.hero-photo,.photo-large,.frame{transition:translate 1700ms var(--ease) .15s,opacity 1300ms var(--ease) .15s,scale 1700ms var(--ease) .15s}
+.scene:not(.active) .hero-photo,.scene:not(.active) .photo-large{translate:0 90px;opacity:0;scale:.9}
+html:not(.ready) .hero-photo,html:not(.ready) .photo-large{translate:0 90px;opacity:0;scale:.9;transition:none}
+.scene:not(.active) .frame{translate:-30px -30px;opacity:0}
+.frame{transition-delay:.45s}
+.hero-photo img,.photo-large img{transform:scale(1.28);transition:transform 2600ms var(--ease)}
+.scene.active .hero-photo img,.scene.active .photo-large img{transform:scale(1.04);animation:kb 18s ease-in-out 2.6s infinite alternate}
+@keyframes kb{to{transform:scale(1.14) translate3d(-1.5%,-1%,0)}}
+.hero-photo,.photo-large{will-change:auto}
+.scene.active .hero-visual,.scene.active .photo-large{animation:float 9s ease-in-out 1.8s infinite alternate}
+@keyframes float{to{translate:0 -10px}}
+
+/* дымные струи */
+.wisps{position:absolute;inset:0;overflow:hidden}
+.wisp{position:absolute;bottom:-30vh;left:var(--x);width:var(--w);height:55vh;opacity:0;
+  background:radial-gradient(closest-side,rgba(255,225,190,.14),rgba(255,210,170,.05) 60%,transparent);
+  border-radius:50%;animation:rise var(--s) ease-in var(--dl) infinite}
+@keyframes rise{0%{opacity:0;transform:translate3d(0,0,0) scale(.7)}
+  20%{opacity:1}
+  100%{opacity:0;transform:translate3d(var(--dx),-120vh,0) scale(1.7)}}
+
+/* вспышка пролёта сквозь облако */
+.flash{position:absolute;inset:0;opacity:0;
+  background:radial-gradient(circle at 50% 55%,rgba(255,205,150,.28),rgba(255,180,120,.08) 40%,transparent 70%)}
+.flash.go{animation:flash 1500ms ease-out}
+@keyframes flash{0%{opacity:0;transform:scale(.7)}30%{opacity:1}100%{opacity:0;transform:scale(1.8)}}
+
+/* параллакс от мыши */
+.sky{transform:translate3d(calc(var(--mx,0)*-16px),calc(var(--my,0)*-10px),0) scale(1.05);transition:transform 900ms var(--ease)}
+.world{transform:translate3d(calc(var(--mx,0)*7px),calc(var(--my,0)*5px),0);transition:transform 1100ms var(--ease)}
+@media(hover:none){.sky,.world{transform:none!important}.sky{transform:scale(1.02)!important}}
+.lite .wisps,.lite .flash{display:none}
+.lite .scene.active .hero-photo img,.lite .scene.active .photo-large img{animation:none}
+.lite .scene.active .hero-visual,.lite .scene.active .photo-large{animation:none}
+.paused .wisp,.paused .flash,.paused img{animation-play-state:paused}
+
+/* ---------- ЭКОНОМИЯ РЕСУРСОВ ---------- */
+.lite .far,.lite .near{display:none}
+.lite .mid .drift{animation-duration:140s}
+.paused .drift,.paused .loader-line span{animation-play-state:paused}
 @media(prefers-reduced-motion:reduce){
-
-  *,
-  *::before,
-  *::after{
-    animation:none!important;
-    transition:none!important;
-  }
+  .drift,.loader-line span,.wisp,.flash,img,.hero-visual,.photo-large{animation:none!important}
+  *{transition-duration:.01ms!important}
 }
 </style>
 </head>
-
 <body>
 
-<!-- =======================================================
-     BACKGROUND
-======================================================= -->
-
-<div class="background"></div>
-
-<!-- =======================================================
-     LOADER
-======================================================= -->
-
-<div class="loader" id="loader">
-  <div class="loader-inner">
-    <div class="loader-logo">ДЫМНЫЙ ДОМ</div>
-
-    <div class="loader-line">
-      <span></span>
-    </div>
-  </div>
+<div class="sky" aria-hidden="true">
+  <div class="tone t0 on"></div><div class="tone t1"></div><div class="tone t2"></div>
+  <div class="tone t3"></div><div class="tone t4"></div>
+  <div class="sun"></div>
+  <div class="layer far"><div class="drift"></div></div>
+  <div class="layer mid"><div class="drift"></div></div>
+  <div class="layer near"><div class="drift"></div></div>
+  <div class="wisps"><i class="wisp" style="--x:8%;--w:22vw;--s:16s;--dl:-2s;--dx:6vw"></i><i class="wisp" style="--x:24%;--w:18vw;--s:20s;--dl:-9s;--dx:-5vw"></i><i class="wisp" style="--x:42%;--w:26vw;--s:18s;--dl:-5s;--dx:7vw"></i><i class="wisp" style="--x:58%;--w:20vw;--s:22s;--dl:-12s;--dx:-6vw"></i><i class="wisp" style="--x:74%;--w:24vw;--s:17s;--dl:-7s;--dx:5vw"></i><i class="wisp" style="--x:90%;--w:18vw;--s:21s;--dl:-14s;--dx:-4vw"></i></div>
+  <div class="flash" id="flash"></div>
+  <div class="vignette"></div>
 </div>
 
-<!-- =======================================================
-     APP
-======================================================= -->
+<div class="loader" id="loader"><div><div class="loader-logo">ДЫМНЫЙ ДОМ</div><div class="loader-line"><span></span></div></div></div>
 
 <div class="app">
-
-  <!-- HEADER -->
-
   <header class="header">
-
-    <a href="#0" class="logo" data-scene="0">
-      ДЫМНЫЙ<span>ДОМ</span>
-    </a>
-
-    <nav class="nav">
-
-      <button data-scene="0">
-        Начало
-      </button>
-
-      <button data-scene="1">
-        Рыба
-      </button>
-
-      <button data-scene="2">
-        Процесс
-      </button>
-
-      <button data-scene="3">
-        Дым
-      </button>
-
-      <button data-scene="4">
-        Заказ
-      </button>
-
+    <a href="#" class="logo" data-scene="0">ДЫМНЫЙ<span>ДОМ</span></a>
+    <nav class="nav" aria-label="Разделы">
+      <button data-scene="0">Начало</button><button data-scene="1">Рыба</button>
+      <button data-scene="2">Процесс</button><button data-scene="3">Дым</button><button data-scene="4">Заказ</button>
     </nav>
-
-    <a
-      class="header-order"
-      href="#"
-      data-scene="4"
-    >
-      Заказать
-    </a>
-
+    <a class="header-order" href="#" data-scene="4">Заказать</a>
   </header>
 
-
-  <!-- =====================================================
-       WORLD
-  ====================================================== -->
-
-  <div class="world" id="world">
-
-
-    <!-- ===================================================
-         SCENE 1
-    ==================================================== -->
-
+  <main class="world">
     <section class="scene active">
-
       <div class="scene-content hero">
-
         <div class="hero-copy">
-
-          <div class="label">
-            Копчение с характером
-          </div>
-
-          <h1 class="hero-title">
-            Настоящий
-            <span>дым.</span>
-          </h1>
-
-          <p class="hero-text">
-            Рыба, огонь, натуральная древесная щепа
-            и время. Ничего лишнего — только настоящий
-            вкус копчения.
-          </p>
-
+          <div class="label">Копчение с характером</div>
+          <h1 class="hero-title">Настоящий <span>дым.</span></h1>
+          <p class="hero-text">Рыба, огонь, натуральная древесная щепа и время. Ничего лишнего — только настоящий вкус копчения.</p>
           <div class="buttons">
-
-            <button
-              class="button primary"
-              data-scene="1"
-            >
-              Исследовать
-            </button>
-
-            <button
-              class="button"
-              data-scene="4"
-            >
-              Заказать
-            </button>
-
+            <button class="button primary" data-scene="1">Исследовать</button>
+            <button class="button" data-scene="4">Заказать</button>
           </div>
-
         </div>
-
-
         <div class="hero-visual">
-
           <div class="frame"></div>
-
-          <div class="hero-photo">
-            <img
-              src="ghost.jpg"
-              alt="Дымный дом"
-              fetchpriority="high"
-            >
-          </div>
-
+          <div class="hero-photo"><img src="ghost.jpg" alt="Дымный дом" fetchpriority="high" decoding="async"></div>
         </div>
-
       </div>
-
     </section>
 
-
-    <!-- ===================================================
-         SCENE 2
-    ==================================================== -->
-
     <section class="scene">
-
       <div class="scene-content fish">
-
-        <div class="photo-large fish-photo">
-
-          <img
-            src="fish.jpg"
-            alt="Копчёная рыба"
-            loading="eager"
-          >
-
-        </div>
-
+        <div class="photo-large fish-photo"><img src="fish.jpg" alt="Копчёная рыба" decoding="async"></div>
         <div class="fish-copy">
-
-          <div class="label">
-            01 — Рыба
-          </div>
-
-          <h2>
-            Основа
-            <span>вкуса.</span>
-          </h2>
-
-          <p class="text">
-            Всё начинается с самой рыбы.
-            Мы сохраняем её естественную текстуру
-            и даём дыму сделать остальное.
-          </p>
-
-          <div class="quote">
-            «Хороший дым не скрывает вкус.»
-          </div>
-
+          <div class="label">Рыба</div>
+          <h2>Основа <span>вкуса.</span></h2>
+          <p class="text">Всё начинается с самой рыбы. Мы сохраняем её естественную текстуру и даём дыму сделать остальное.</p>
+          <div class="quote">«Хороший дым не скрывает вкус.»</div>
         </div>
-
       </div>
-
     </section>
 
-
-    <!-- ===================================================
-         SCENE 3
-    ==================================================== -->
-
     <section class="scene">
-
-      <div class="scene-content process-content">
-
+      <div class="scene-content">
         <div class="process-heading">
-
-          <div class="label">
-            02 — Процесс
-          </div>
-
-          <h2>
-            Три вещи.<br>
-            Один <i>характер.</i>
-          </h2>
-
+          <div class="label">Процесс</div>
+          <h2>Три вещи.<br>Один <i>характер.</i></h2>
         </div>
-
-
         <div class="cards">
-
-          <article class="card">
-
-            <div class="card-number">
-              01
-            </div>
-
-            <h3>
-              Рыба
-            </h3>
-
-            <p>
-              Подготовленная основа,
-              с которой начинается процесс.
-            </p>
-
-          </article>
-
-
-          <article class="card">
-
-            <div class="card-number">
-              02
-            </div>
-
-            <h3>
-              Щепа
-            </h3>
-
-            <p>
-              Натуральная древесина
-              создаёт характер дыма.
-            </p>
-
-          </article>
-
-
-          <article class="card">
-
-            <div class="card-number">
-              03
-            </div>
-
-            <h3>
-              Время
-            </h3>
-
-            <p>
-              Никакой спешки.
-              Вкус формируется постепенно.
-            </p>
-
-          </article>
-
+          <article class="card"><div class="card-number">01</div><h3>Рыба</h3><p>Подготовленная основа, с которой начинается процесс.</p></article>
+          <article class="card"><div class="card-number">02</div><h3>Щепа</h3><p>Натуральная древесина создаёт характер дыма.</p></article>
+          <article class="card"><div class="card-number">03</div><h3>Время</h3><p>Никакой спешки. Вкус формируется постепенно.</p></article>
         </div>
-
       </div>
-
     </section>
 
-
-    <!-- ===================================================
-         SCENE 4
-    ==================================================== -->
-
     <section class="scene">
-
       <div class="scene-content wood">
-
-        <div class="photo-large wood-photo">
-
-          <img
-            src="wood.jpg"
-            alt="Древесная щепа"
-            loading="eager"
-          >
-
-        </div>
-
+        <div class="photo-large wood-photo"><img src="wood.jpg" alt="Древесная щепа" decoding="async"></div>
         <div class="wood-copy">
-
-          <div class="label">
-            03 — Дым
-          </div>
-
-          <h2>
-            Дерево
-            <span>говорит.</span>
-          </h2>
-
-          <p class="text">
-            Щепа создаёт аромат, глубину
-            и тот самый вкус, который
-            невозможно получить быстрым способом.
-          </p>
-
+          <div class="label">Дым</div>
+          <h2>Дерево <span>говорит.</span></h2>
+          <p class="text">Щепа создаёт аромат, глубину и тот самый вкус, который невозможно получить быстрым способом.</p>
         </div>
-
       </div>
-
     </section>
-
-
-    <!-- ===================================================
-         SCENE 5
-    ==================================================== -->
 
     <section class="scene">
-
       <div class="scene-content order">
-
-        <div class="label order-label">
-          Финальная сцена — заказ
-        </div>
-
-        <h2 class="order-title">
-          Попробуй
-          <span>дым.</span>
-        </h2>
-
-
+        <div class="label">Заказ</div>
+        <h2 class="order-title">Попробуй <span>дым.</span></h2>
         <div class="order-box">
-
           <div class="quantity-row">
-
-            <div class="product-name">
-
-              <strong>
-                Копчёная рыба
-              </strong>
-
-              <small>
-                1000 ֏ / шт.
-              </small>
-
-            </div>
-
-
+            <div class="product-name"><strong>Копчёная рыба</strong><small>1000 ֏ / шт.</small></div>
             <div class="quantity">
-
-              <button
-                class="qty"
-                id="minus"
-                type="button"
-              >
-                −
-              </button>
-
-              <div
-                class="qty-value"
-                id="quantity"
-              >
-                1
-              </div>
-
-              <button
-                class="qty"
-                id="plus"
-                type="button"
-              >
-                +
-              </button>
-
+              <button class="qty" id="minus" type="button" aria-label="Меньше">−</button>
+              <div class="qty-value" id="quantity" aria-live="polite">1</div>
+              <button class="qty" id="plus" type="button" aria-label="Больше">+</button>
             </div>
-
           </div>
-
-
-          <div class="total-row">
-
-            <span class="total-label">
-              Итого
-            </span>
-
-            <strong
-              class="total"
-              id="total"
-            >
-              1000 ֏
-            </strong>
-
-          </div>
-
-
-          <a
-            class="telegram"
-            id="telegram"
-            href="https://t.me/cookhimnigga"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Заказать в Telegram
-          </a>
-
+          <div class="total-row"><span class="total-label">Итого</span><strong class="total" id="total">1000 ֏</strong></div>
+          <a class="telegram" id="telegram" href="https://t.me/cookhimnigga" target="_blank" rel="noopener noreferrer">Заказать в Telegram</a>
         </div>
-
       </div>
-
     </section>
+  </main>
 
+  <div class="hud" aria-hidden="true">
+    <span class="hud-dot active"></span><span class="hud-dot"></span><span class="hud-dot"></span><span class="hud-dot"></span><span class="hud-dot"></span>
+    <div class="hud-track"><div class="hud-progress" id="progress"></div></div>
   </div>
-
-
-  <!-- =====================================================
-       HUD
-  ====================================================== -->
-
-  <div class="hud">
-
-    <span class="hud-dot active"></span>
-    <span class="hud-dot"></span>
-    <span class="hud-dot"></span>
-    <span class="hud-dot"></span>
-    <span class="hud-dot"></span>
-
-    <div class="hud-track">
-      <div
-        class="hud-progress"
-        id="progress"
-      ></div>
-    </div>
-
-  </div>
-
-
-  <!-- COUNTER -->
-
-  <div class="counter">
-    SCENE
-    <strong id="counter">
-      01
-    </strong>
-    / 05
-  </div>
-
-
-  <!-- AUTO -->
-
-  <div class="auto">
-
-    <span class="auto-dot"></span>
-
-    <span id="autoText">
-      AUTO
-    </span>
-
-  </div>
-
+  <div class="counter">СЦЕНА <strong id="counter">01</strong> / 05</div>
+  <div class="auto"><span class="auto-dot"></span><span id="autoText">АВТО</span></div>
 </div>
 
-
 <script>
-/* =========================================================
-   ДЫМНЫЙ ДОМ
-   LIGHT CINEMATIC ENGINE
-========================================================= */
+(()=>{
+const root=document.documentElement;
+const scenes=[...document.querySelectorAll(".scene")];
+const dots=[...document.querySelectorAll(".hud-dot")];
+const tones=[...document.querySelectorAll(".tone")];
+const navBtns=[...document.querySelectorAll(".nav button")];
+const $=id=>document.getElementById(id);
+const counter=$("counter"),progress=$("progress"),autoText=$("autoText"),loader=$("loader");
+const TOTAL=scenes.length,AUTO_DELAY=3500,LOCK=1200;
+let current=0,locked=false,manual=false,autoTimer=0,resumeTimer=0,touchY=null;
 
-const scenes =
-  Array.from(document.querySelectorAll(".scene"));
+/* слабое устройство -> меньше слоёв облаков */
+const weak=(navigator.hardwareConcurrency||8)<=4||(navigator.deviceMemory||8)<=4;
+if(weak)root.classList.add("lite");
 
-const dots =
-  Array.from(document.querySelectorAll(".hud-dot"));
-
-const counter =
-  document.getElementById("counter");
-
-const progress =
-  document.getElementById("progress");
-
-const autoText =
-  document.getElementById("autoText");
-
-const loader =
-  document.getElementById("loader");
-
-const TOTAL =
-  scenes.length;
-
-const AUTO_DELAY = 2500;
-const TRANSITION_TIME = 1150;
-
-let current = 0;
-let autoTimer = null;
-let locked = false;
-let manuallyControlled = false;
-let touchStart = 0;
-
-
-/* =========================================================
-   SCENE
-========================================================= */
-
-function updateUI(){
-
-  scenes.forEach((scene,index)=>{
-
-    scene.classList.remove(
-      "active",
-      "previous",
-      "next"
-    );
-
-    if(index === current){
-      scene.classList.add("active");
-    }
-    else if(index < current){
-      scene.classList.add("previous");
-    }
-    else{
-      scene.classList.add("next");
-    }
-
+/* каскадное появление: задержки по порядку */
+scenes.forEach(sc=>{
+  sc.querySelectorAll(".label,h1,h2,h1 span,h2 span,.hero-text,.text,.quote,.buttons,.card,.order-box").forEach((el,i)=>{
+    el.dataset.r="";
+    const extra=el.matches("span")?260:0;
+    el.style.setProperty("--d",(250+i*120+extra)+"ms");
   });
+});
+const flash=$("flash");
+function fly(){flash.classList.remove("go");void flash.offsetWidth;flash.classList.add("go");}
 
-
-  dots.forEach((dot,index)=>{
-
-    dot.classList.toggle(
-      "active",
-      index === current
-    );
-
+function render(){
+  scenes.forEach((s,i)=>{
+    s.classList.toggle("active",i===current);
+    s.classList.toggle("previous",i<current);
+    s.classList.toggle("next",i>current);
+    s.toggleAttribute("inert",i!==current);
   });
-
-
-  counter.textContent =
-    String(current + 1).padStart(2,"0");
-
-
-  progress.style.height =
-    `${((current + 1) / TOTAL) * 100}%`;
-
-
-  /* Change atmosphere slightly per scene */
-
-  const backgrounds = [
-
-    `
-      radial-gradient(
-        circle at 65% 40%,
-        rgba(118,78,42,.23),
-        transparent 35%
-      ),
-      #090806
-    `,
-
-    `
-      radial-gradient(
-        circle at 25% 50%,
-        rgba(128,82,44,.22),
-        transparent 35%
-      ),
-      #090806
-    `,
-
-    `
-      radial-gradient(
-        circle at 50% 50%,
-        rgba(94,67,42,.20),
-        transparent 38%
-      ),
-      #090806
-    `,
-
-    `
-      radial-gradient(
-        circle at 75% 50%,
-        rgba(151,101,52,.20),
-        transparent 35%
-      ),
-      #090806
-    `,
-
-    `
-      radial-gradient(
-        circle at 50% 45%,
-        rgba(173,119,64,.24),
-        transparent 36%
-      ),
-      #090806
-    `
-  ];
-
-  document
-    .querySelector(".background")
-    .style.background =
-      backgrounds[current];
+  dots.forEach((d,i)=>d.classList.toggle("active",i===current));
+  tones.forEach((t,i)=>t.classList.toggle("on",i===current));
+  navBtns.forEach((b,i)=>b.setAttribute("aria-current",i===current));
+  counter.textContent=String(current+1).padStart(2,"0");
+  progress.style.transform=`scaleY(${(current+1)/TOTAL})`;
+  root.style.setProperty("--p",current);   /* камера летит вперёд */
 }
-
-
-/* =========================================================
-   GO TO
-========================================================= */
-
-function goTo(index, manual=true){
-
-  if(index < 0 || index >= TOTAL){
-    return;
-  }
-
-  if(index === current){
-    return;
-  }
-
-  if(locked){
-    return;
-  }
-
-  locked = true;
-
+function goTo(i,byUser=true){
+  if(i<0||i>=TOTAL||i===current||locked)return;
+  locked=true;
+  if(byUser){manual=true;autoText.textContent="РУЧНОЙ";}
+  current=i;render();fly();
   clearTimeout(autoTimer);
-
-  if(manual){
-    manuallyControlled = true;
-    autoText.textContent = "MANUAL";
-  }
-
-  current = index;
-
-  updateUI();
-
-  setTimeout(()=>{
-
-    locked = false;
-
-    if(!manuallyControlled){
-      scheduleAuto();
-    }
-
-  },TRANSITION_TIME);
+  setTimeout(()=>{locked=false;if(!manual)schedule();},LOCK);
 }
-
-
-/* =========================================================
-   AUTO
-========================================================= */
-
-function scheduleAuto(){
-
+function schedule(){
   clearTimeout(autoTimer);
-
-  if(
-    manuallyControlled ||
-    current >= TOTAL - 1
-  ){
-    if(current >= TOTAL - 1){
-      autoText.textContent = "END";
-    }
-
-    return;
-  }
-
-  autoText.textContent = "AUTO";
-
-  autoTimer = setTimeout(()=>{
-
-    if(!manuallyControlled){
-      goTo(current + 1,false);
-    }
-
-  },AUTO_DELAY);
+  if(manual||document.hidden)return;
+  if(current>=TOTAL-1){autoText.textContent="КОНЕЦ";return;}
+  autoText.textContent="АВТО";
+  autoTimer=setTimeout(()=>goTo(current+1,false),AUTO_DELAY);
 }
-
-
-/* =========================================================
-   MANUAL RESET
-========================================================= */
-
-function resumeAuto(){
-
-  manuallyControlled = false;
-
-  if(current < TOTAL - 1){
-    autoText.textContent = "AUTO";
-    scheduleAuto();
-  }
-  else{
-    autoText.textContent = "END";
-  }
+function userAction(){
+  clearTimeout(autoTimer);clearTimeout(resumeTimer);
+  manual=true;autoText.textContent="РУЧНОЙ";
+  resumeTimer=setTimeout(()=>{manual=false;schedule();},6000);
 }
-
-
-/* =========================================================
-   NAV BUTTONS
-========================================================= */
-
-document
-  .querySelectorAll("[data-scene]")
-  .forEach(element=>{
-
-    element.addEventListener("click",event=>{
-
-      event.preventDefault();
-
-      const target =
-        Number(element.dataset.scene);
-
-      clearTimeout(autoTimer);
-
-      goTo(target,true);
-
-      /*
-        User intentionally selected a scene.
-        Don't let autoplay fight immediately.
-      */
-
-      setTimeout(()=>{
-        resumeAuto();
-      },2200);
-
-    });
-
-  });
-
-
-/* =========================================================
-   WHEEL
-========================================================= */
-
-let wheelTimeout = null;
-
-window.addEventListener(
-  "wheel",
-  event=>{
-
-    if(Math.abs(event.deltaY) < 18){
-      return;
-    }
-
-    if(wheelTimeout){
-      return;
-    }
-
-    wheelTimeout =
-      setTimeout(()=>{
-        wheelTimeout = null;
-      },700);
-
-    clearTimeout(autoTimer);
-
-    manuallyControlled = true;
-
-    autoText.textContent = "MANUAL";
-
-    if(event.deltaY > 0){
-
-      goTo(
-        Math.min(current + 1,TOTAL - 1),
-        true
-      );
-
-    }else{
-
-      goTo(
-        Math.max(current - 1,0),
-        true
-      );
-
-    }
-
-    /*
-      Once the user stops scrolling,
-      autoplay can continue again.
-    */
-
-    clearTimeout(window.__manualResume);
-
-    window.__manualResume =
-      setTimeout(()=>{
-        resumeAuto();
-      },3500);
-
-  },
-  {passive:true}
-);
-
-
-/* =========================================================
-   TOUCH
-========================================================= */
-
-window.addEventListener(
-  "touchstart",
-  event=>{
-
-    touchStart =
-      event.touches[0].clientY;
-
-    clearTimeout(autoTimer);
-
-  },
-  {passive:true}
-);
-
-
-window.addEventListener(
-  "touchend",
-  event=>{
-
-    const touchEnd =
-      event.changedTouches[0].clientY;
-
-    const distance =
-      touchStart - touchEnd;
-
-    if(Math.abs(distance) < 55){
-      return;
-    }
-
-    manuallyControlled = true;
-    autoText.textContent = "MANUAL";
-
-    if(distance > 0){
-
-      goTo(
-        Math.min(current + 1,TOTAL - 1),
-        true
-      );
-
-    }else{
-
-      goTo(
-        Math.max(current - 1,0),
-        true
-      );
-
-    }
-
-    clearTimeout(window.__manualResume);
-
-    window.__manualResume =
-      setTimeout(()=>{
-        resumeAuto();
-      },3500);
-
-  },
-  {passive:true}
-);
-
-
-/* =========================================================
-   KEYBOARD
-========================================================= */
-
-window.addEventListener(
-  "keydown",
-  event=>{
-
-    if(
-      event.key !== "ArrowDown" &&
-      event.key !== "ArrowUp" &&
-      event.key !== "PageDown" &&
-      event.key !== "PageUp" &&
-      event.key !== " "
-    ){
-      return;
-    }
-
-    event.preventDefault();
-
-    clearTimeout(autoTimer);
-
-    manuallyControlled = true;
-
-    autoText.textContent = "MANUAL";
-
-    const down =
-      event.key === "ArrowDown" ||
-      event.key === "PageDown" ||
-      event.key === " ";
-
-    goTo(
-      down
-        ? Math.min(current + 1,TOTAL - 1)
-        : Math.max(current - 1,0),
-      true
-    );
-
-    clearTimeout(window.__manualResume);
-
-    window.__manualResume =
-      setTimeout(()=>{
-        resumeAuto();
-      },3500);
-
-  }
-);
-
-
-/* =========================================================
-   QUANTITY
-========================================================= */
-
-let quantity = 1;
-
-const quantityElement =
-  document.getElementById("quantity");
-
-const totalElement =
-  document.getElementById("total");
-
-const telegram =
-  document.getElementById("telegram");
-
-function updateOrder(){
-
-  const total =
-    quantity * 1000;
-
-  quantityElement.textContent =
-    quantity;
-
-  totalElement.textContent =
-    `${total} ֏`;
-
-  const message =
-    `Здравствуйте! Хочу заказать копчёную рыбу — ${quantity} шт. Итого: ${total} ֏`;
-
-  telegram.href =
-    `https://t.me/cookhimnigga?text=${encodeURIComponent(message)}`;
-}
-
-
-document
-  .getElementById("plus")
-  .addEventListener("click",()=>{
-
-    quantity =
-      Math.min(99,quantity + 1);
-
-    updateOrder();
-
-  });
-
-
-document
-  .getElementById("minus")
-  .addEventListener("click",()=>{
-
-    quantity =
-      Math.max(1,quantity - 1);
-
-    updateOrder();
-
-  });
-
-
-updateOrder();
-
-
-/* =========================================================
-   IMAGE PRELOAD
-========================================================= */
-
-const images = [
-  "ghost.jpg",
-  "fish.jpg",
-  "wood.jpg"
-];
-
-let loaded = 0;
-
-function finishLoading(){
-
-  if(loaded >= images.length){
-
-    setTimeout(()=>{
-
-      loader.classList.add("hidden");
-
-      /*
-        First scene appears immediately.
-        Then autoplay waits 2.5 sec.
-      */
-
-      setTimeout(()=>{
-        scheduleAuto();
-      },700);
-
-    },180);
-
-  }
-
-}
-
-images.forEach(src=>{
-
-  const image =
-    new Image();
-
-  image.onload = ()=>{
-    loaded++;
-    finishLoading();
-  };
-
-  image.onerror = ()=>{
-    /*
-      Broken image must not prevent
-      the entire website from opening.
-    */
-
-    loaded++;
-    finishLoading();
-  };
-
-  image.src = src;
-
+const step=d=>{userAction();goTo(Math.max(0,Math.min(TOTAL-1,current+d)),true);};
+
+document.querySelectorAll("[data-scene]").forEach(el=>el.addEventListener("click",e=>{
+  e.preventDefault();userAction();goTo(+el.dataset.scene,true);
+}));
+
+/* колесо / трекпад: копим дельту, один шаг за жест */
+let acc=0,wheelLock=0;
+addEventListener("wheel",e=>{
+  e.preventDefault();
+  const now=performance.now();
+  if(now<wheelLock)return;
+  acc+=e.deltaY;
+  if(Math.abs(acc)>40){step(acc>0?1:-1);acc=0;wheelLock=now+LOCK;}
+},{passive:false});
+
+/* тач */
+addEventListener("touchstart",e=>{touchY=e.touches[0].clientY;},{passive:true});
+addEventListener("touchmove",e=>{e.preventDefault();},{passive:false});
+addEventListener("touchend",e=>{
+  if(touchY===null)return;
+  const d=touchY-e.changedTouches[0].clientY;touchY=null;
+  if(Math.abs(d)>50)step(d>0?1:-1);
+},{passive:true});
+
+addEventListener("keydown",e=>{
+  const down=["ArrowDown","PageDown"," "].includes(e.key);
+  const up=["ArrowUp","PageUp"].includes(e.key);
+  if(!down&&!up)return;
+  if(e.target.closest("button,a")&&e.key===" ")return;
+  e.preventDefault();step(down?1:-1);
 });
 
+/* пауза, когда вкладка скрыта */
+document.addEventListener("visibilitychange",()=>{
+  root.classList.toggle("paused",document.hidden);
+  if(document.hidden)clearTimeout(autoTimer);else if(!manual&&!locked)schedule();
+});
 
-/* =========================================================
-   FALLBACK LOADER
-========================================================= */
+/* параллакс от мыши (ПК) */
+if(matchMedia("(hover:hover)").matches&&!matchMedia("(prefers-reduced-motion:reduce)").matches){
+  let raf=0,tx=0,ty=0;
+  addEventListener("pointermove",e=>{
+    tx=e.clientX/innerWidth-.5;ty=e.clientY/innerHeight-.5;
+    if(raf)return;
+    raf=requestAnimationFrame(()=>{raf=0;root.style.setProperty("--mx",tx.toFixed(3));root.style.setProperty("--my",ty.toFixed(3));});
+  },{passive:true});
+}
 
-setTimeout(()=>{
+/* заказ */
+let qty=1;
+const tg=$("telegram");
+function order(){
+  const total=qty*1000;
+  $("quantity").textContent=qty;
+  $("total").textContent=`${total} ֏`;
+  tg.href=`https://t.me/cookhimnigga?text=${encodeURIComponent(`Здравствуйте! Хочу заказать копчёную рыбу — ${qty} шт. Итого: ${total} ֏`)}`;
+}
+$("plus").onclick=()=>{qty=Math.min(99,qty+1);order();};
+$("minus").onclick=()=>{qty=Math.max(1,qty-1);order();};
 
+/* загрузка */
+let started=false;
+function start(){
+  if(started)return;started=true;
   loader.classList.add("hidden");
+  setTimeout(()=>root.classList.add("ready"),250);
+  setTimeout(schedule,2400);
+}
+const imgs=[...document.images];
+Promise.all(imgs.map(i=>i.decode?i.decode().catch(()=>{}):Promise.resolve())).then(()=>setTimeout(start,150));
+setTimeout(start,3000);
 
-  if(!manuallyControlled){
-    scheduleAuto();
-  }
-
-},3500);
-
-
-/* =========================================================
-   INITIAL UI
-========================================================= */
-
-updateUI();
-
+order();render();
+})();
 </script>
-
 </body>
-  </html>
+                                                                     </html>
